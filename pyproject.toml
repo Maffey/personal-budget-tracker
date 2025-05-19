@@ -4,14 +4,20 @@ version = "0.1.0"
 description = "Track income and expenses."
 requires-python = ">=3.13"
 dependencies = [
-    "django~=5.2.1",
+    "django>=5.2.1",
     "psycopg2-binary>=2.9.10",
 ]
 
 [dependency-groups]
 dev = [
-    "django-debug-toolbar~=5.2.0",
+    "django-debug-toolbar>=5.2.0",
+    "pre-commit>=4.2.0",
+    "ruff>=0.11.10",
 ]
 prod = [
     "gunicorn>=23.0.0",
 ]
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"

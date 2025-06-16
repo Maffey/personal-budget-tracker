@@ -1,0 +1,14 @@
+{% extends "backend/base.html" %}
+
+{% block title %}{{ form_title|default:"Form" }}{% endblock %}
+
+{% block content %}
+<h1>{{ form_title|default:"Form" }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}  {# Renders form fields as paragraphs #}
+    <button type="submit">Save</button>
+    <a href="{{ request.META.HTTP_REFERER|default:_('backend:home') }}" class="button">Cancel</a>
+
+</form>
+{% endblock %}

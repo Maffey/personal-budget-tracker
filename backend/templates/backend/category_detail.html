@@ -1,0 +1,33 @@
+{% extends "backend/base.html" %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ category.name }}</h1>
+<p><strong>Description:</strong> {{ category.description|default:"No description provided." }}</p>
+<a href="{% url 'backend:category_update' category.pk %}" class="button">Edit Category</a>
+<a href="{% url 'backend:category_delete' category.pk %}" class="button delete-button">Delete Category</a>
+<a href="{% url 'backend:category_list' %}" class="button">Back to List</a>
+
+<h2>Expenses in this Category</h2>
+{% if expenses %}
+    <ul>
+    {% for expense in expenses %}
+        <li>{{ expense.description }} - ${{ expense.amount }} on {{ expense.date|date:"Y-m-d" }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No expenses recorded for this category.</p>
+{% endif %}
+
+<h2>Incomes in this Category</h2>
+{% if incomes %}
+    <ul>
+    {% for income in incomes %}
+        <li>{{ income.description }} - ${{ income.amount }} on {{ income.date|date:"Y-m-d" }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No incomes recorded for this category.</p>
+{% endif %}
+{% endblock %}

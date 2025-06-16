@@ -1,0 +1,64 @@
+{% extends "backend/base.html" %}
+
+{% block title %}Dashboard - {{ current_month }}{% endblock %}
+
+{% block content %}
+<h1>Dashboard - {{ current_month }}</h1>
+
+<h2>Summary</h2>
+<p>Total Income: ${{ total_income|floatformat:2 }}</p>
+<p>Total Expense: ${{ total_expense|floatformat:2 }}</p>
+<p><strong>Net Balance: ${{ net_balance|floatformat:2 }}</strong></p>
+
+<h2>Recent Expenses</h2>
+{% if recent_expenses %}
+    <table>
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expense in recent_expenses %}
+            <tr>
+                <td><a href="{% url 'backend:expense_detail' expense.pk %}">{{ expense.description }}</a></td>
+                <td>${{ expense.amount|floatformat:2 }}</td>
+                <td>{{ expense.date|date:"Y-m-d" }}</td>
+                <td>{{ expense.category.name|default:"N/A" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No expenses recorded yet. <a href="{% url 'backend:expense_create' %}" class="button">Add Expense</a></p>
+{% endif %}
+
+<h2>Recent Incomes</h2>
+{% if recent_incomes %}
+    <table>
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for income in recent_incomes %}
+            <tr>
+                <td><a href="#">{{ income.description }}</a></td> <!-- TODO Add income_detail URL -->
+                <td>${{ income.amount|floatformat:2 }}</td>
+                <td>{{ income.date|date:"Y-m-d" }}</td>
+                <td>{{ income.source.name|default:"N/A" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No incomes recorded yet. <a href="{% url 'backend:income_create' %}" class="button">Add Income</a></p>
+{% endif %}
+{% endblock %}

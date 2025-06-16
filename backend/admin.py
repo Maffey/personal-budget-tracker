@@ -1,17 +1,6 @@
-from django.contrib import admin  # noqa
+from django.contrib import admin
 
 from backend.models import Income, Expense, IncomeSource, PaymentMethod, Category
-
-
-# --- Basic Registration (Option 1: Simple) ---
-# If you just want them to show up without much customization:
-# admin.site.register(Category)
-# admin.site.register(PaymentMethod)
-# admin.site.register(IncomeSource)
-# admin.site.register(Expense)
-# admin.site.register(Income)
-
-# --- Customized Admin Interfaces (Option 2: Recommended for better UX) ---
 
 
 @admin.register(Category)
@@ -47,7 +36,7 @@ class ExpenseAdmin(admin.ModelAdmin):
     )  # 'user' if you uncommented it
     list_filter = ("date", "category", "payment_method")  # 'user'
     search_fields = ("description", "notes", "category__name", "payment_method__name")  # 'user__username'
-    date_hierarchy = "date"  # Adds date-based drilldown navigation
+    date_hierarchy = "date"
     ordering = ("-date",)
     readonly_fields = ("created_at", "updated_at")
 
@@ -56,11 +45,7 @@ class ExpenseAdmin(admin.ModelAdmin):
     #     return obj.user.username if obj.user else "N/A"
     # display_user.short_description = 'User'
 
-    # If you don't have the user field active, you can remove display_user
-    # and its references, or define it to return something static if needed.
-    # For now, let's make a placeholder if user is not active.
     def display_user(self, obj):
-        # Check if the 'user' attribute exists on the model instance
         if hasattr(obj, "user") and obj.user:
             return obj.user.username
         return "N/A (Single User Mode)"
@@ -85,7 +70,7 @@ class ExpenseAdmin(admin.ModelAdmin):
             "Timestamps",
             {
                 "fields": ("created_at", "updated_at"),
-                "classes": ("collapse",),  # Makes this section collapsible
+                "classes": ("collapse",),
             },
         ),
     )
@@ -112,7 +97,6 @@ class IncomeAdmin(admin.ModelAdmin):
     #     return obj.user.username if obj.user else "N/A"
     # display_user.short_description = 'User'
 
-    # Placeholder if user field is not active
     def display_user(self, obj):
         if hasattr(obj, "user") and obj.user:
             return obj.user.username

@@ -12,7 +12,7 @@ class Category(models.Model):
     """
 
     name = models.CharField(max_length=100, unique=True, help_text="Name of the category (e.g., Groceries, Salary)")
-    description = models.TextField(blank=True, null=True, help_text="Optional description for the category")
+    description = models.TextField(blank=True, null=True, help_text="Description for the category")
 
     class Meta:
         verbose_name_plural = "Categories"
@@ -31,7 +31,7 @@ class PaymentMethod(models.Model):
     name = models.CharField(
         max_length=100, unique=True, help_text="Name of the payment method (e.g., Credit Card XYZ, Cash)"
     )
-    description = models.TextField(blank=True, null=True, help_text="Optional description for the payment method")
+    description = models.TextField(blank=True, null=True, help_text="Description for the payment method")
 
     class Meta:
         ordering = ["name"]
@@ -49,7 +49,7 @@ class IncomeSource(models.Model):
     name = models.CharField(
         max_length=100, unique=True, help_text="Name of the income source (e.g., Main Job, Freelance Client)"
     )
-    description = models.TextField(blank=True, null=True, help_text="Optional description for the income source")
+    description = models.TextField(blank=True, null=True, help_text="Description for the income source")
 
     class Meta:
         ordering = ["name"]

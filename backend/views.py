@@ -1,15 +1,17 @@
 # backend/views.py
+from django.http import HttpRequest
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy  # For CBVs
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from .budget_utilities.cashflow import get_most_recent_transactions, get_total_of_transaction_type
+from .budget_utilities.date_time import get_current_month
 from .models import Category, PaymentMethod, Expense, Income
 from .forms import CategoryForm, PaymentMethodForm, ExpenseForm, IncomeForm
-from django.utils import timezone
 
 
-def home(request):
+def home(request: HttpRequest) -> HttpResponse:
     """
     A simple dashboard showing recent transactions and summaries.
     """
@@ -26,17 +28,17 @@ def home(request):
         "total_expense": total_expense,
         "total_income": total_income,
         "net_balance": net_balance,
-        "current_month": timezone.now().strftime("%B %Y"),
+        "current_month": get_current_month(),
     }
     return render(request, "backend/home.html", context)
 
 
-def category_list(request):
+def category_list(request: HttpRequest) -> HttpResponse:
     categories = Category.objects.all()
     return render(request, "backend/category_list.html", {"categories": categories})
 
 
-def category_detail(request, pk):
+def category_detail(request: HttpRequest, pk: int) -> HttpResponse:
     category = get_object_or_404(Category, pk=pk)
     category_expenses = category.expenses.all()
     category_incomes = category.incomes.all()
@@ -47,7 +49,7 @@ def category_detail(request, pk):
     )
 
 
-def category_create(request):
+def category_create(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = CategoryForm(request.POST)
         if form.is_valid():
@@ -58,7 +60,7 @@ def category_create(request):
     return render(request, "backend/category_form.html", {"form": form, "form_title": "Create Category"})
 
 
-def category_update(request, pk):
+def category_update(request: HttpRequest, pk: int) -> HttpResponse:
     category = get_object_or_404(Category, pk=pk)
     if request.method == "POST":
         form = CategoryForm(request.POST, instance=category)
@@ -70,7 +72,7 @@ def category_update(request, pk):
     return render(request, "backend/category_form.html", {"form": form, "form_title": "Update Category"})
 
 
-def category_delete(request, pk):
+def category_delete(request: HttpRequest, pk: int) -> HttpResponse:
     category = get_object_or_404(Category, pk=pk)
     if request.method == "POST":
         category.delete()

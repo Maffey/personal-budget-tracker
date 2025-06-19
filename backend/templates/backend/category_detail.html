@@ -13,7 +13,7 @@
 {% if expenses %}
     <ul>
     {% for expense in expenses %}
-        <li>{{ expense.description }} - ${{ expense.amount }} on {{ expense.date|date:"Y-m-d" }}</li>
+        <li>{{ expense.description }} | ${{ expense.amount }} | {{ expense.date|date:"Y-m-d" }}</li>
     {% endfor %}
     </ul>
 {% else %}
@@ -24,7 +24,7 @@
 {% if incomes %}
     <ul>
     {% for income in incomes %}
-        <li>{{ income.description }} - ${{ income.amount }} on {{ income.date|date:"Y-m-d" }}</li>
+        <li>{{ income.description }} | ${{ income.amount }} | {{ income.date|date:"Y-m-d" }}</li>
     {% endfor %}
     </ul>
 {% else %}

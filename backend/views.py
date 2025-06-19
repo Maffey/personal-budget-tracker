@@ -2,21 +2,22 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy  # For CBVs
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
+from .budget_utilities.cashflow import get_most_recent_transactions, get_total_of_transaction_type
 from .models import Category, PaymentMethod, Expense, Income
 from .forms import CategoryForm, PaymentMethodForm, ExpenseForm, IncomeForm
 from django.utils import timezone
-from django.db.models import Sum
 
 
 def home(request):
     """
     A simple dashboard showing recent transactions and summaries.
     """
-    recent_expenses = Expense.objects.all().order_by("-date")[:5]
-    recent_incomes = Income.objects.all().order_by("-date")[:5]
+    recent_expenses = get_most_recent_transactions(Expense)
+    recent_incomes = get_most_recent_transactions(Income)
 
-    total_expense = Expense.objects.aggregate(total=Sum("amount"))["total"] or 0
-    total_income = Income.objects.aggregate(total=Sum("amount"))["total"] or 0
+    total_expense = get_total_of_transaction_type(Expense)
+    total_income = get_total_of_transaction_type(Income)
     net_balance = total_income - total_expense
 
     context = {

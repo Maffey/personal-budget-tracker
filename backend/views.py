@@ -10,6 +10,8 @@ from .budget_utilities.date_time import get_current_month
 from .models import Category, PaymentMethod, Expense, Income
 from .forms import CategoryForm, PaymentMethodForm, ExpenseForm, IncomeForm
 
+_DEFAULT_PAGINATION = 10
+
 
 def home(request: HttpRequest) -> HttpResponse:
     """
@@ -35,7 +37,7 @@ def home(request: HttpRequest) -> HttpResponse:
 
 def category_list(request: HttpRequest) -> HttpResponse:
     categories = Category.objects.all()
-    return render(request, "backend/category_list.html", {"categories": categories})
+    return render(request, "backend/category/category_list.html", {"categories": categories})
 
 
 def category_detail(request: HttpRequest, pk: int) -> HttpResponse:
@@ -44,7 +46,7 @@ def category_detail(request: HttpRequest, pk: int) -> HttpResponse:
     category_incomes = category.incomes.all()
     return render(
         request,
-        "backend/category_detail.html",
+        "backend/category/category_detail.html",
         {"category": category, "expenses": category_expenses, "incomes": category_incomes},
     )
 
@@ -57,7 +59,7 @@ def category_create(request: HttpRequest) -> HttpResponse:
             return redirect("backend:category_list")
     else:
         form = CategoryForm()
-    return render(request, "backend/category_form.html", {"form": form, "form_title": "Create Category"})
+    return render(request, "backend/category/category_form.html", {"form": form, "form_title": "Create Category"})
 
 
 def category_update(request: HttpRequest, pk: int) -> HttpResponse:
@@ -69,7 +71,7 @@ def category_update(request: HttpRequest, pk: int) -> HttpResponse:
             return redirect("backend:category_detail", pk=category.pk)
     else:
         form = CategoryForm(instance=category)
-    return render(request, "backend/category_form.html", {"form": form, "form_title": "Update Category"})
+    return render(request, "backend/category/category_form.html", {"form": form, "form_title": "Update Category"})
 
 
 def category_delete(request: HttpRequest, pk: int) -> HttpResponse:
@@ -77,14 +79,14 @@ def category_delete(request: HttpRequest, pk: int) -> HttpResponse:
     if request.method == "POST":
         category.delete()
         return redirect("backend:category_list")
-    return render(request, "backend/category_confirm_delete.html", {"object": category, "type": "Category"})
+    return render(request, "backend/confirm_delete.html", {"object": category, "type": Category.__name__})
 
 
 class ExpenseListView(ListView):
     model = Expense
     template_name = "backend/expense_list.html"
     context_object_name = "expenses"
-    paginate_by = 10
+    paginate_by = _DEFAULT_PAGINATION
 
 
 class ExpenseDetailView(DetailView):
@@ -133,7 +135,7 @@ class IncomeListView(ListView):
     model = Income
     template_name = "backend/income_list.html"
     context_object_name = "incomes"
-    paginate_by = 10
+    paginate_by = _DEFAULT_PAGINATION
 
 
 class IncomeCreateView(CreateView):

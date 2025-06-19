@@ -32,7 +32,7 @@ class ExpenseAdmin(admin.ModelAdmin):
         "date",
         "category",
         "payment_method",
-        "display_user",
+        # "display_user",
     )  # 'user' if you uncommented it
     list_filter = ("date", "category", "payment_method")  # 'user'
     search_fields = ("description", "notes", "category__name", "payment_method__name")  # 'user__username'
@@ -45,12 +45,12 @@ class ExpenseAdmin(admin.ModelAdmin):
     #     return obj.user.username if obj.user else "N/A"
     # display_user.short_description = 'User'
 
-    def display_user(self, obj):
-        if hasattr(obj, "user") and obj.user:
-            return obj.user.username
-        return "N/A (Single User Mode)"
+    # def display_user(self, obj):
+    #     if hasattr(obj, "user") and obj.user:
+    #         return obj.user.username
+    #     return "N/A (Single User Mode)"
 
-    display_user.short_description = "User (if applicable)"
+    # display_user.short_description = "User (if applicable)"
 
     fieldsets = (
         (
@@ -84,7 +84,7 @@ class IncomeAdmin(admin.ModelAdmin):
         "date",
         "category",
         "source",
-        "display_user",
+        # "display_user",
     )  # 'user' if you uncommented it
     list_filter = ("date", "category", "source")  # 'user'
     search_fields = ("description", "notes", "category__name", "source__name")  # 'user__username'
@@ -97,12 +97,12 @@ class IncomeAdmin(admin.ModelAdmin):
     #     return obj.user.username if obj.user else "N/A"
     # display_user.short_description = 'User'
 
-    def display_user(self, obj):
-        if hasattr(obj, "user") and obj.user:
-            return obj.user.username
-        return "N/A (Single User Mode)"
-
-    display_user.short_description = "User (if applicable)"
+    # def display_user(self, obj):
+    #     if hasattr(obj, "user") and obj.user:
+    #         return obj.user.username
+    #     return "N/A (Single User Mode)"
+    #
+    # display_user.short_description = "User (if applicable)"
 
     fieldsets = (
         (

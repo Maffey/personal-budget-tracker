@@ -84,21 +84,21 @@ def category_delete(request: HttpRequest, pk: int) -> HttpResponse:
 
 class ExpenseListView(ListView):
     model = Expense
-    template_name = "backend/expense_list.html"
+    template_name = "backend/expense/expense_list.html"
     context_object_name = "expenses"
     paginate_by = _DEFAULT_PAGINATION
 
 
 class ExpenseDetailView(DetailView):
     model = Expense
-    template_name = "backend/expense_detail.html"
+    template_name = "backend/expense/expense_detail.html"
     context_object_name = "expense"
 
 
 class ExpenseCreateView(CreateView):
     model = Expense
     form_class = ExpenseForm
-    template_name = "backend/expense_form.html"
+    template_name = "backend/expense/expense_form.html"
     success_url = reverse_lazy("backend:expense_list")  # Redirect after successful creation
 
     def get_context_data(self, **kwargs):
@@ -110,7 +110,7 @@ class ExpenseCreateView(CreateView):
 class ExpenseUpdateView(UpdateView):
     model = Expense
     form_class = ExpenseForm
-    template_name = "backend/expense_form.html"
+    template_name = "backend/expense/expense_form.html"
     success_url = reverse_lazy("backend:expense_list")
 
     def get_context_data(self, **kwargs):
@@ -121,7 +121,7 @@ class ExpenseUpdateView(UpdateView):
 
 class ExpenseDeleteView(DeleteView):
     model = Expense
-    template_name = "backend/expense_confirm_delete.html"
+    template_name = "backend/confirm_delete.html"
     success_url = reverse_lazy("backend:expense_list")
     context_object_name = "object"
 

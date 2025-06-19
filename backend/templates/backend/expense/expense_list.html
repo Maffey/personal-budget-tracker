@@ -1,0 +1,52 @@
+{% extends "backend/base.html" %}
+
+{% block title %}Expenses{% endblock %}
+
+{% block content %}
+<h1>Expenses</h1>
+<a href="{% url 'backend:expense_create' %}" class="button">Add New Expense</a>
+<br><br>
+
+{% if expenses %}
+<table>
+    <thead>
+    <tr>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>Category</th>
+        <th>Payment Method</th>
+        <th>Notes</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for expense in expenses %}
+    <tr>
+        <td>
+            {# It's common practice to link the main field to the detail view #}
+            <a href="{% url 'backend:expense_detail' expense.pk %}">{{ expense.description }}</a>
+        </td>
+        <td>{{ expense.amount }}</td>
+        <td>{{ expense.date }}</td>
+        <td>
+            {% if expense.category %}
+                <a href="{% url 'backend:category_detail' expense.category.pk %}">{{ expense.category.name }}</a>
+            {% else %}
+                -
+            {% endif %}
+        </td>
+        <td>{{ expense.payment_method.name|default:"-" }}</td> {# TODO add link as above in the future #}
+        <td>{{ expense.notes|truncatewords:8|default:"-" }}</td>
+        <td class="actions">
+            <a href="{% url 'backend:expense_update' expense.pk %}">Edit</a>
+            <a href="{% url 'backend:expense_delete' expense.pk %}">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No expenses found.</p>
+{% endif %}
+{% endblock %}
